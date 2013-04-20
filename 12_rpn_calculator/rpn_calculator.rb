@@ -2,7 +2,6 @@ class RPNCalculator
 
 	def initialize
 		@numbers = []
-		@total = 0
 	end
 
 	def push(num)
@@ -10,59 +9,51 @@ class RPNCalculator
 	end
 
 	def plus
-		if @numbers.size == 0
-			raise("calculator is empty")
-		elsif @numbers.size > 1
+		if @numbers.size > 1
 			first_val = @numbers.pop
 			second_val = @numbers.pop
-			@total = first_val + second_val
+			sum = first_val + second_val
+			@numbers << sum
 		else
-			first_val = @numbers.pop
-			@total += first_val
+			raise("calculator is empty")
 		end
 	end
 
 	def minus
-		if @numbers.size == 0
-			raise("calculator is empty")
-		elsif @numbers.size > 1
+		if @numbers.size > 1
 			first_val = @numbers.pop
 			second_val = @numbers.pop
-			@total = second_val - first_val
+			difference = second_val - first_val
+			@numbers << difference
 		else
-			first_val = @numbers.pop
-			@total -= first_val
+			raise("calculator is empty")
 		end
 	end
 
 	def times
-		if @numbers.size == 0
-			raise("calculator is empty")
-		elsif @numbers.size > 1
+		if @numbers.size > 1
 			first_val = @numbers.pop
 			second_val = @numbers.pop
-			@total = first_val * second_val
+			product = first_val * second_val
+			@numbers << product
 		else
-			first_val = @numbers.pop
-			@total *= first_val
+			raise("calculator is empty")
 		end
 	end
 
 	def divide
-		if @numbers.size == 0
-			raise("calculator is empty")
-		elsif @numbers.size > 1
+		if @numbers.size > 1
 			first_val = @numbers.pop
 			second_val = @numbers.pop
-			@total = second_val.to_f / first_val.to_f
+			quotient = second_val.to_f / first_val.to_f
+			@numbers << quotient
 		else
-			first_val = @numbers.pop
-			@total /= first_val.to_f
+			raise("calculator is empty")
 		end
 	end
 
 	def value
-		@total
+		@numbers.last
 	end
 
 	def tokens(string)
@@ -85,6 +76,21 @@ class RPNCalculator
 	end
 
 	def evaluate(string)
-		
+		calc = RPNCalculator.new
+		values = string.split(" ")
+		values.each do |val|
+			if val.match(/[0-9]/)
+				calc.push(val.to_i)
+			elsif val.match(/\+/)
+				calc.plus
+			elsif val.match(/\-/)
+				calc.minus
+			elsif val.match(/\*/)
+				calc.times
+			elsif val.match(/\//)
+				calc.divide
+			end
+		end
+		calc.value
 	end
 end
