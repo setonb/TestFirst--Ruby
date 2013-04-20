@@ -33,7 +33,7 @@ class Dictionary
 	def find(phrase)
 		list = {}
 		@entries.each do |key, val|
-			if key[0...phrase.length] == phrase
+			if key.match(/#{phrase}/)
 				list[key] = val
 			end
 		end
